@@ -15,8 +15,43 @@ function App() {
   const [dataMonth, setDataMonth] = useState<CalendarEvent[]>([
     {
       title: 'Reunião 1', 
-      date: '2025-08-01', 
+      date: '2025-09-04', 
       color: '#eb2',
+    },
+    {
+      title: 'Reunião 2', 
+      date: '2025-09-04', 
+      color: '#68d959',
+    },
+    {
+      title: 'Reunião 3', 
+      date: '2025-09-04', 
+      color: '#525ceb',
+    },
+    {
+      title: 'Reunião 4', 
+      date: '2025-09-04', 
+      color: '#44cfac',
+    },
+    {
+      title: 'Reunião 3', 
+      date: '2025-09-01', 
+      color: '#03a5fc',
+    },
+    {
+      title: 'Reunião 4', 
+      date: '2025-09-02', 
+      color: '#ff03ee',
+    },
+    {
+      title: 'Reunião 5', 
+      date: '2025-09-03', 
+      color: '#f25529',
+    },
+    {
+      title: 'Reunião 6', 
+      date: '2025-09-04', 
+      color: '#f25529',
     },
   ]);
   const [dataWeek, setDataWeek] = useState<CalendarEventWeek[]>([
@@ -27,6 +62,34 @@ function App() {
       dateEnd: '2025-08-01 02:10', 
       color: '#eb2',
     },
+    {
+      title: 'Reunião 2', 
+      date: '2025-08-01', 
+      dateStart: '2025-08-01 00:20', 
+      dateEnd: '2025-08-01 01:10', 
+      color: '#68d959',
+    },
+    {
+      title: 'Reunião 3', 
+      date: '2025-08-01', 
+      dateStart: '2025-08-01 01:10', 
+      dateEnd: '2025-08-01 01:30', 
+      color: '#03a5fc',
+    },
+    {
+      title: 'Reunião 4', 
+      date: '2025-08-01', 
+      dateStart: '2025-08-01 03:00', 
+      dateEnd: '2025-08-01 04:00', 
+      color: '#ff03ee',
+    },
+    {
+      title: 'Reunião 5', 
+      date: '2025-08-01', 
+      dateStart: '2025-08-01 02:0', 
+      dateEnd: '2025-08-01 3:30', 
+      color: '#f25529',
+    },
   ]);
   const [dataList, setDataList] = useState<CalendarEventList[]>([
     {
@@ -34,98 +97,64 @@ function App() {
       date: '2025-08-01', 
       dateStart: '2025-08-01 00:10', 
       dateEnd: '2025-08-01 02:10', 
-      list: 'list1',
       color: '#eb2',
+      list: 'Colaborador 1',
+    },
+    {
+      title: 'Reunião 2', 
+      date: '2025-08-01', 
+      dateStart: '2025-08-01 00:20', 
+      dateEnd: '2025-08-01 01:10', 
+      color: '#68d959',
+      list: 'Colaborador 4',
+    },
+    {
+      title: 'Reunião 3', 
+      date: '2025-08-01', 
+      dateStart: '2025-08-01 01:10', 
+      dateEnd: '2025-08-01 01:30', 
+      color: '#03a5fc',
+      list: 'Colaborador 2',
+    },
+    {
+      title: 'Reunião 4', 
+      date: '2025-08-01', 
+      dateStart: '2025-08-01 03:00', 
+      dateEnd: '2025-08-01 04:00', 
+      color: '#ff03ee',
+      list: 'Colaborador 2',
+    },
+    {
+      title: 'Reunião 5', 
+      date: '2025-08-01', 
+      dateStart: '2025-08-01 02:0', 
+      dateEnd: '2025-08-01 3:30', 
+      color: '#f25529',
+      list: 'Colaborador 2',
     },
     {
       title: 'Reunião 1', 
       date: '2025-08-01', 
-      dateStart: '2025-08-01 01:10', 
-      dateEnd: '2025-08-01 02:10', 
-      list: 'list1',
-      color: '#eb2',
-    },
-  ]);
-
-  const [data, setData] = useState<CalendarEvent[]>([
-    {
-      title: 'Reunião de Equipe 22', 
-      date: '2025-08-03', 
-      dateStart: '2025-08-03 07:00', 
-      dateEnd: '2025-08-03 09:10', 
-      color: '#eb2',
-      list: 'list1',
-      description: 'Reunião importante com toda a equipe para discutir os próximos passos do projeto.',
+      dateStart: '2025-08-01 00:10', 
+      dateEnd: '2025-08-01 01:10', 
+      color: '#525ceb',
+      list: 'Colaborador 3',
     },
     {
-      title: 'Reunião de Equipe', 
-      date: '2025-08-03', 
-      dateStart: '2025-08-03 09:00', 
-      dateEnd: '2025-08-03 09:55', 
-      color: '#ef4444',
-      list: 'list1',
-      description: 'Reunião semanal de alinhamento.',
+      title: 'Reunião 2', 
+      date: '2025-08-01', 
+      dateStart: '2025-08-01 01:20', 
+      dateEnd: '2025-08-01 01:50', 
+      color: '#68d959',
+      list: 'Colaborador 3',
     },
     {
-      title: 'Apresentação de Projeto', 
-      date: '2025-08-03', 
-      dateStart: '2025-08-03 09:00', 
-      dateEnd: '2025-08-03 10:25', 
-      color: '#3b82f6',
-      list: 'list1',
-      description: 'Apresentação do novo projeto para os stakeholders.',
-    },
-    {
-      title: 'Coffee Break', 
-      date: '2025-08-03', 
-      dateStart: '2025-08-03 09:10', 
-      dateEnd: '2025-08-03 09:25', 
-      color: '#22c55e',
-      list: 'list1',
-    },
-    {
-      title: 'Workshop de Treinamento', 
-      date: '2025-08-03', 
-      dateStart: '2025-08-03 10:15', 
-      dateEnd: '2025-08-03 10:50', 
-      color: '#a855f7',
-      list: 'list1',
-      description: 'Workshop sobre as novas tecnologias da empresa.',
-    },
-    {
-      title: 'Almoço Executivo', 
-      date: '2025-08-03', 
-      dateStart: '2025-08-03 10:50', 
-      dateEnd: '2025-08-03 11:00', 
-      color: '#f97316',
-      list: 'list1',
-    },
-    {
-      title: 'Sessão de Planejamento', 
-      date: '2025-08-03', 
-      dateStart: '2025-08-03 09:25', 
-      dateEnd: '2025-08-03 11:00', 
-      color: '#a0522d',
-      list: 'list1',
-      description: 'Sessão estratégica de planejamento trimestral.',
-    },
-    {
-      title: 'Reunião de Encerramento', 
-      date: '2025-08-03', 
-      dateStart: '2025-08-03 11:50', 
-      dateEnd: '2025-08-03 12:00', 
-      color: '#ec4899',
-      list: 'list1',
-      description: 'Reunião final para fechar o dia.',
-    },
-    {
-      title: 'Reunião de Equipe 222', 
-      date: '2025-08-04', 
-      dateStart: '2025-08-04 09:00', 
-      dateEnd: '2025-08-04 09:55', 
-      color: '#ef4444',
-      list: 'list2',
-      description: 'Reunião da equipe 2.',
+      title: 'Reunião 3', 
+      date: '2025-08-01', 
+      dateStart: '2025-08-01 00:25', 
+      dateEnd: '2025-08-01 01:30', 
+      color: '#44cfac',
+      list: 'Colaborador 3',
     },
   ]);
 
@@ -138,20 +167,27 @@ function App() {
   }
 
   return (
-    <div style={{justifyContent: 'center', alignItems: 'center', width: '100vw'}}>
-      <div style={{width: '1500px', marginTop: '2rem'}}>
+    <div style={{
+      display: 'flex', 
+      flexDirection: 'column',
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      width: '100vw',
+      minHeight: '100vh',
+      padding: '2rem'
+    }}>
+      <div style={{width: '900px', marginBottom: '5rem'}}>
         <Calendar 
-          type="list"
+          type="month"
           year={2025}
-          month={8}
-          day={1}
-          events={dataList}
+          month={9}
+          events={dataMonth}
           eventClick={eventClick}
           dateClick={dateClick}
           // tooltipComponent={CustomTooltip}
         />
       </div>
-      <div style={{width: '1500px', marginTop: '2rem'}}>
+      <div style={{width: '1000px', height: '700px', marginBottom: '5rem'}}>
         <Calendar 
           type="week"
           year={2025}
@@ -162,12 +198,13 @@ function App() {
           // tooltipComponent={CustomTooltip}
         />
       </div>
-      <div style={{width: '1500px', marginTop: '2rem'}}>
+      <div style={{width: '1000px', height: '700px', marginBottom: '5rem'}}>
         <Calendar 
-          type="month"
+          type="list"
           year={2025}
           month={8}
-          events={dataMonth}
+          day={1}
+          events={dataList}
           eventClick={eventClick}
           dateClick={dateClick}
           // tooltipComponent={CustomTooltip}

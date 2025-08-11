@@ -299,7 +299,7 @@ export function CalendarWeek({type, year, week, events, eventClick, dateClick, t
       <div className="ml-[50px]">
         <CalendarHeaderWeekList/>
       </div>
-      <div className="relative flex h-[1000px] overflow-y-auto">
+      <div className="relative flex h-full overflow-y-auto">
         {/* Header de horários */}
         <div className="w-[50px]">
           <CalendarHeaderHourList listTime={listTime} />

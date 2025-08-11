@@ -45,7 +45,7 @@ export function CalendarItemTooltip({ event, isVisible, position }: TooltipProps
           style={{ backgroundColor: event.color || '#5abff2' }}
         ></div>
         <div className="text-xs text-gray-500">
-          {formatDate(event.dateStart)}
+          {formatDate(event.date)}
         </div>
       </div>
 

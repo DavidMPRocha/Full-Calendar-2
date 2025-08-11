@@ -162,6 +162,73 @@ A visualização lista apresenta uma vista de agenda para um dia específico, or
 
 ## 🎯 Estrutura de Eventos
 
+## 🖱️ Callbacks de Interação
+
+### eventClick
+Callback executado quando um evento é clicado. Recebe o evento completo como parâmetro.
+
+```typescript
+// Para visualização mensal
+eventClick?: (event: CalendarEvent) => void
+
+// Para visualização semanal
+eventClick?: (event: CalendarEventWeek) => void
+
+// Para visualização lista
+eventClick?: (event: CalendarEventList) => void
+```
+
+**Exemplo de utilização:**
+```tsx
+const handleEventClick = (event: CalendarEvent) => {
+  console.log('Evento clicado:', event.title);
+  // Abrir modal de detalhes, editar evento, etc.
+};
+
+<Calendar 
+  type="month"
+  year={2025}
+  month={8}
+  events={eventos}
+  eventClick={handleEventClick}
+/>
+```
+
+### dateClick
+Callback executado quando uma data/hora é clicada. Permite criar novos eventos ou navegar para detalhes.
+
+```typescript
+// Para visualização mensal
+dateClick?: (date: string) => void
+
+// Para visualização semanal
+dateClick?: (date: string, time: string) => void
+
+// Para visualização lista
+dateClick?: (date: string, time: string, list: string) => void
+```
+
+**Exemplo de utilização:**
+```tsx
+// Visualização mensal
+const handleDateClick = (date: string) => {
+  console.log('Data clicada:', date); // formato: "YYYY-MM-DD"
+  // Abrir formulário para criar novo evento
+};
+
+// Visualização semanal/lista
+const handleDateTimeClick = (date: string, time: string) => {
+  console.log('Data/Hora clicada:', date, time); // formato: "YYYY-MM-DD", "HH:MM"
+  // Abrir formulário para criar novo evento na hora específica
+};
+
+// Visualização lista (com lista específica)
+const handleDateTimeListClick = (date: string, time: string, list: string) => {
+  console.log('Data/Hora/Lista clicada:', date, time, list);
+  // Criar evento na lista específica
+};
+```
+
 ### CalendarEvent (Mensal)
 ```typescript
 interface CalendarEvent {
