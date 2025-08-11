@@ -160,8 +160,6 @@ A visualização lista apresenta uma vista de agenda para um dia específico, or
 />
 ```
 
-## 🎯 Estrutura de Eventos
-
 ## 🖱️ Callbacks de Interação
 
 ### eventClick
@@ -228,6 +226,8 @@ const handleDateTimeListClick = (date: string, time: string, list: string) => {
   // Criar evento na lista específica
 };
 ```
+
+## 🎯 Estrutura de Eventos
 
 ### CalendarEvent (Mensal)
 ```typescript
