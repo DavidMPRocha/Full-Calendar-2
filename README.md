@@ -42,12 +42,16 @@ npm run dev
 
 A visualização mensal apresenta uma vista tradicional de calendário, mostrando todos os dias do mês selecionado organizados em semanas.
 
+<img width="853" height="805" alt="image" src="https://github.com/user-attachments/assets/d359227b-7722-4353-8587-1a81944052a4" />
+
+
 #### Características:
-- **Layout**: Grid 7x6 (dias da semana x semanas)
+- **Layout**: Grid (dias da semana x semanas)
 - **Navegação**: Filtros para alterar mês e ano
 - **Eventos**: Exibidos como indicadores visuais nos dias correspondentes
 - **Interação**: Clique em dias para criar eventos, clique em eventos para detalhes
 - **Dias Externos**: Dias de outros meses são visíveis mas destacados diferentemente
+
 
 #### Propriedades:
 ```typescript
@@ -77,6 +81,9 @@ A visualização mensal apresenta uma vista tradicional de calendário, mostrand
 ### 2. 📅 Visualização Semanal (`type="week"`)
 
 A visualização semanal oferece uma vista detalhada de uma semana específica, com horários organizados verticalmente e dias da semana horizontalmente.
+
+<img width="978" height="808" alt="image" src="https://github.com/user-attachments/assets/40ddaed5-01ce-4356-bff4-69b1e7a4507e" />
+
 
 #### Características:
 - **Layout**: Grid temporal (horários x dias da semana)
@@ -114,6 +121,9 @@ A visualização semanal oferece uma vista detalhada de uma semana específica, 
 ### 3. 📅 Visualização Lista (`type="list"`)
 
 A visualização lista apresenta uma vista de agenda para um dia específico, organizando eventos por listas/categorias e horários.
+
+<img width="914" height="787" alt="image" src="https://github.com/user-attachments/assets/47d00375-209b-482c-9cb2-c4ffb329e966" />
+
 
 #### Características:
 - **Layout**: Lista temporal com múltiplas colunas (listas)
