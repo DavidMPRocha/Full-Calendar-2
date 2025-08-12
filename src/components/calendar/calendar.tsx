@@ -51,6 +51,7 @@ interface WeekCalendarProps extends Omit<BaseCalendarProps, 'events'> {
   type: 'week';
   week: number;
   events: CalendarEventWeek[];
+  timeInterval?: 5 | 15 | 30;
 }
 
 interface ListCalendarProps extends Omit<BaseCalendarProps, 'events'> {
@@ -58,6 +59,7 @@ interface ListCalendarProps extends Omit<BaseCalendarProps, 'events'> {
   month: number;
   day: number;
   events: CalendarEventList[];
+  timeInterval?: 5 | 15 | 30;
 }
 
 export type CalendarProps = WeekCalendarProps | MonthCalendarProps | ListCalendarProps;
@@ -67,6 +69,7 @@ export function Calendar(props: CalendarProps) {
   const month = 'month' in props ? props.month : undefined;
   const week = 'week' in props ? props.week : undefined;
   const day = 'day' in props ? props.day : undefined;
+  const timeInterval = 'timeInterval' in props ? props.timeInterval : undefined;
 
   return (
     <div className="w-full h-full min-w-[500px] min-h-[500px]">
@@ -90,6 +93,7 @@ export function Calendar(props: CalendarProps) {
           eventClick={eventClick} 
           dateClick={dateClick}
           tooltipComponent={tooltipComponent}
+          timeInterval={timeInterval}
         />
       )}
       {(type === 'list') && day !== undefined && month !== undefined && (
@@ -102,6 +106,7 @@ export function Calendar(props: CalendarProps) {
           eventClick={eventClick}
           dateClick={dateClick}
           tooltipComponent={tooltipComponent}
+          timeInterval={timeInterval}
         />
       )}
     </div>

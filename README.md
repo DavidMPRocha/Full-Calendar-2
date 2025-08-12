@@ -87,11 +87,12 @@ A visualização semanal oferece uma vista detalhada de uma semana específica, 
 
 #### Características:
 - **Layout**: Grid temporal (horários x dias da semana)
-- **Precisão**: Intervalos de 5 minutos para agendamentos precisos
+- **Precisão**: Intervalos configuráveis (5, 15 ou 30 minutos) para agendamentos precisos
 - **Eventos**: Posicionados temporalmente com duração visual
 - **Sobreposição**: Gestão automática de eventos sobrepostos
 - **Navegação**: Filtros para alterar semana e ano
 - **Horários**: Das 00:00 às 23:55
+- **Intervalos**: Altura das linhas ajustada automaticamente conforme o intervalo selecionado
 
 #### Propriedades:
 ```typescript
@@ -102,7 +103,8 @@ A visualização semanal oferece uma vista detalhada de uma semana específica, 
   events: CalendarEventWeek[],
   eventClick?: (event: CalendarEventWeek) => void,
   dateClick?: (date: string, time: string) => void,
-  tooltipComponent?: (props: TooltipComponentProps) => ReactNode
+  tooltipComponent?: (props: TooltipComponentProps) => ReactNode,
+  timeInterval?: 5 | 15 | 30 // Intervalo de tempo em minutos (padrão: 5)
 }
 ```
 
@@ -115,6 +117,7 @@ A visualização semanal oferece uma vista detalhada de uma semana específica, 
   events={eventosSemanais}
   eventClick={handleEventClick}
   dateClick={handleDateTimeClick}
+  timeInterval={15} // Intervalo de 15 minutos
 />
 ```
 
@@ -128,10 +131,11 @@ A visualização lista apresenta uma vista de agenda para um dia específico, or
 #### Características:
 - **Layout**: Lista temporal com múltiplas colunas (listas)
 - **Organização**: Eventos agrupados por categorias/listas
-- **Precisão**: Intervalos de 5 minutos
+- **Precisão**: Intervalos configuráveis (5, 15 ou 30 minutos)
 - **Flexibilidade**: Suporte a múltiplas listas simultâneas
 - **Navegação**: Filtros para alterar dia, mês e ano
 - **Horários**: Das 00:00 às 23:55
+- **Intervalos**: Altura das linhas ajustada automaticamente conforme o intervalo selecionado
 
 #### Propriedades:
 ```typescript
@@ -143,7 +147,8 @@ A visualização lista apresenta uma vista de agenda para um dia específico, or
   events: CalendarEventList[],
   eventClick?: (event: CalendarEventList) => void,
   dateClick?: (date: string, time: string, list: string) => void,
-  tooltipComponent?: (props: TooltipComponentProps) => ReactNode
+  tooltipComponent?: (props: TooltipComponentProps) => ReactNode,
+  timeInterval?: 5 | 15 | 30 // Intervalo de tempo em minutos (padrão: 5)
 }
 ```
 
@@ -157,6 +162,7 @@ A visualização lista apresenta uma vista de agenda para um dia específico, or
   events={eventosLista}
   eventClick={handleEventClick}
   dateClick={handleDateTimeListClick}
+  timeInterval={30} // Intervalo de 30 minutos
 />
 ```
 
@@ -263,6 +269,52 @@ interface CalendarEventList {
   description?: string;
   [key: string]: any;
 }
+```
+
+## ⏰ Configuração de Intervalos de Tempo
+
+O calendário oferece configuração flexível de intervalos de tempo para as visualizações semanal e lista, permitindo adaptar a precisão temporal conforme suas necessidades.
+
+### Intervalos Disponíveis
+- **5 minutos** (padrão): Máxima precisão para agendamentos detalhados
+- **15 minutos**: Equilibrio entre precisão e visualização
+- **30 minutos**: Visualização mais compacta para visão geral
+
+### Comportamento dos Intervalos
+- **Altura das Linhas**: Ajustada automaticamente conforme o intervalo selecionado
+  - 5 minutos: 20px de altura
+  - 15 minutos: 32px de altura  
+  - 30 minutos: 48px de altura
+- **Posicionamento de Eventos**: Calculado automaticamente baseado no intervalo
+- **Compatibilidade**: Funciona com todos os tipos de eventos existentes
+
+### Exemplos de Utilização
+
+#### Visualização Semanal com Intervalo de 15 Minutos
+```tsx
+<Calendar 
+  type="week"
+  year={2025}
+  week={31}
+  events={eventosSemanais}
+  timeInterval={15}
+  eventClick={handleEventClick}
+  dateClick={handleDateTimeClick}
+/>
+```
+
+#### Visualização Lista com Intervalo de 30 Minutos
+```tsx
+<Calendar 
+  type="list"
+  year={2025}
+  month={8}
+  day={1}
+  events={eventosLista}
+  timeInterval={30}
+  eventClick={handleEventClick}
+  dateClick={handleDateTimeListClick}
+/>
 ```
 
 ## 🎨 Customização

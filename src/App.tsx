@@ -187,7 +187,7 @@ function App() {
           // tooltipComponent={CustomTooltip}
         />
       </div>
-      <div style={{width: '1000px', height: '700px', marginBottom: '5rem'}}>
+      <div style={{width: '1000px', height: '700px', marginBottom: '10rem'}}>
         <Calendar 
           type="week"
           year={2025}
@@ -195,6 +195,7 @@ function App() {
           events={dataWeek}
           eventClick={eventClick}
           dateClick={dateClick}
+          timeInterval={5}
           // tooltipComponent={CustomTooltip}
         />
       </div>
@@ -207,6 +208,7 @@ function App() {
           events={dataList}
           eventClick={eventClick}
           dateClick={dateClick}
+          timeInterval={5}
           // tooltipComponent={CustomTooltip}
         />
       </div>

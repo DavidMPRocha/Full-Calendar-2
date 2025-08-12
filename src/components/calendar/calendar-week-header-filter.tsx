@@ -1,4 +1,15 @@
-export function CalendarWeekHeaderFilter({currentWeek, currentYear, setCurrentWeek, setCurrentYear}: {currentWeek: number, currentYear: number, setCurrentWeek: (week: number) => void, setCurrentYear: (year: number) => void}) {
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+interface CalendarWeekHeaderFilterProps {
+    currentWeek: number;
+    currentYear: number;
+    setCurrentWeek: (week: number) => void;
+    setCurrentYear: (year: number) => void;
+    timeInterval: 5 | 15 | 30;
+    setTimeInterval: (interval: 5 | 15 | 30) => void;
+}
+
+export function CalendarWeekHeaderFilter({currentWeek, currentYear, setCurrentWeek, setCurrentYear, timeInterval, setTimeInterval}: CalendarWeekHeaderFilterProps) {
     // Função para calcular o range de datas da semana
     function getWeekDateRange(year: number, week: number): { start: string, end: string } {
         const firstDayOfYear = new Date(year, 0, 1);
@@ -67,6 +78,14 @@ export function CalendarWeekHeaderFilter({currentWeek, currentYear, setCurrentWe
         return getWeekFromDate(prevDate);
     }
 
+    // Função para ir para a semana atual
+    function goToCurrentWeek() {
+        const today = new Date();
+        const currentWeekInfo = getWeekFromDate(today);
+        setCurrentYear(currentWeekInfo.year);
+        setCurrentWeek(currentWeekInfo.week);
+    }
+
     function handlePrevWeek() {
         const prevWeek = getPrevWeek(currentYear, currentWeek);
         setCurrentYear(prevWeek.year);
@@ -81,16 +100,51 @@ export function CalendarWeekHeaderFilter({currentWeek, currentYear, setCurrentWe
 
     return (
         <div className="flex items-center justify-between mb-4">
-            <button onClick={handlePrevWeek} className="px-2 py-1 rounded bg-gray-300 hover:bg-gray-400">&lt;</button>
-            <div className="text-center">
-                <span className="font-bold text-lg block">
-                    Semana {currentWeek}
-                </span>
-                <span className="text-sm text-gray-600">
-                    {getWeekDateRange(currentYear, currentWeek).start} - {getWeekDateRange(currentYear, currentWeek).end}
-                </span>
+            {/* Botão Hoje "Navega até ao dia atual" */}
+            <div className="flex-1">
+                <button 
+                    onClick={goToCurrentWeek} 
+                    className="p-0 rounded bg-gray-300 hover:bg-gray-400 transition-colors font-medium h-[40px] flex items-center justify-center"
+                >
+                    Hoje
+                </button>
             </div>
-            <button onClick={handleNextWeek} className="px-2 py-1 rounded bg-gray-300 hover:bg-gray-400">&gt;</button>
+
+            {/* Navegação de semana */}
+            <div className="flex items-center justify-center flex-1">
+                <button onClick={handlePrevWeek} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 transition-colors flex items-center h-[40px]">
+                    <ChevronLeft size={16} />
+                </button>
+                <div className="text-center mx-4">
+                    <div className="flex flex-col">
+                        <span className="font-semibold text-sm text-gray-600">
+                            Semana {currentWeek}
+                        </span>
+                        <span className="font-bold text-md w-[220px] text-center">
+                            {getWeekDateRange(currentYear, currentWeek).start} | {getWeekDateRange(currentYear, currentWeek).end}
+                        </span>
+                    </div>
+                </div>
+                <button onClick={handleNextWeek} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 transition-colors flex items-center h-[40px]">
+                    <ChevronRight size={16} />
+                </button>
+            </div>
+
+            {/* Filtro de intervalo "5,15,30" */}
+            <div className="flex-1 flex justify-end">
+                <div className="flex items-center space-x-2">
+                    <span className="text-md text-gray-600 font-medium">Intervalo:</span>
+                    <select 
+                        value={timeInterval} 
+                        onChange={(e) => setTimeInterval(Number(e.target.value) as 5 | 15 | 30)}
+                        className="px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                    >
+                        <option value={5}>5 minutos</option>
+                        <option value={15}>15 minutos</option>
+                        <option value={30}>30 minutos</option>
+                    </select>
+                </div>
+            </div>
         </div>
     )
 }
