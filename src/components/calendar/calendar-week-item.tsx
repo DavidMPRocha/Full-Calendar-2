@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { TooltipComponentProps, CalendarEventWeek } from './calendar';
+import type { TooltipComponentProps, CalendarEventWeek, EventComponentProps } from './calendar';
 import type { ReactNode } from 'react';
 import { CalendarItemTooltip } from './calendar-item-toltip';
 
@@ -12,9 +12,10 @@ interface CalendarWeekItemProps {
   height: number;
   eventClick?: (event: CalendarEventWeek) => void;
   tooltipComponent?: (props: TooltipComponentProps) => ReactNode;
+  eventComponent?: (props: EventComponentProps) => ReactNode;
 }
 
-export function CalendarWeekItem({ event, index, top, adjustedLeft, adjustedWidth, height, eventClick, tooltipComponent}: CalendarWeekItemProps) {
+export function CalendarWeekItem({ event, index, top, adjustedLeft, adjustedWidth, height, eventClick, tooltipComponent, eventComponent}: CalendarWeekItemProps) {
   // Estados para o tooltip
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
@@ -64,8 +65,37 @@ export function CalendarWeekItem({ event, index, top, adjustedLeft, adjustedWidt
     );
   };
 
-  return (
-    <>
+  // Função para renderizar o evento
+  const renderEvent = () => {
+    // Se um componente customizado foi fornecido
+    if (eventComponent) {
+      const customEvent = eventComponent({ event });
+      
+      // Se o componente customizado retornou algo, renderize-o
+      if (customEvent) {
+        return (
+          <div
+            className="absolute cursor-pointer z-10 overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:z-50"
+            style={{
+              top: `${top}px`,
+              left: `${adjustedLeft}%`,
+              width: `${adjustedWidth}%`,
+              maxWidth: '200px',
+              height: `${height}px`,
+              pointerEvents: 'auto'
+            }}
+            onClick={() => eventClick?.(event)}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {customEvent}
+          </div>
+        );
+      }
+    }
+
+    // Caso contrário, use o evento padrão
+    return (
       <div
         key={`${event.title}-${index}`}
         className={`absolute text-white text-xs p-1 rounded cursor-pointer z-10 overflow-hidden transition-all duration-200 hover:scale-105 hover:shadow-lg hover:z-50`}
@@ -84,6 +114,12 @@ export function CalendarWeekItem({ event, index, top, adjustedLeft, adjustedWidt
       >
         {event.title}
       </div>
+    );
+  };
+
+  return (
+    <>
+      {renderEvent()}
       
       {/* Tooltip */}
       {renderTooltip()}

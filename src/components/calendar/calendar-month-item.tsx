@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { CalendarEvent, TooltipComponentProps } from './calendar';
+import type { CalendarEvent, EventComponentProps, TooltipComponentProps } from './calendar';
 import type { ReactNode } from 'react';
 import { CalendarItemTooltip } from './calendar-item-toltip';
 
@@ -7,9 +7,10 @@ interface CalendarItemProps {
   event: CalendarEvent;
   eventClick?: (event: CalendarEvent) => void;
   tooltipComponent?: (props: TooltipComponentProps) => ReactNode;
+  eventComponent?: (props: EventComponentProps) => ReactNode;
 }
 
-export function CalendarMonthItem({ event, eventClick, tooltipComponent }: CalendarItemProps) {
+export function CalendarMonthItem({ event, eventClick, tooltipComponent, eventComponent}: CalendarItemProps) {
   // Estados para o tooltip
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
@@ -59,8 +60,32 @@ export function CalendarMonthItem({ event, eventClick, tooltipComponent }: Calen
     );
   };
 
-  return (
-    <>
+  // Função para renderizar o evento
+  const renderEvent = () => {
+    // Se um componente customizado foi fornecido
+    if (eventComponent) {
+      const customEvent = eventComponent({ event });
+      
+      // Se o componente customizado retornou algo, renderize-o
+      if (customEvent) {
+        return (
+          <div
+            className="cursor-pointer"
+            onClick={e => {
+              e.stopPropagation();
+              eventClick && eventClick(event);
+            }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {customEvent}
+          </div>
+        );
+      }
+    }
+
+    // Caso contrário, use o evento padrão
+    return (
       <div 
         className="rounded-md cursor-pointer mb-0.5"
         style={{backgroundColor: event.color || '#5abff2'}}
@@ -73,6 +98,12 @@ export function CalendarMonthItem({ event, eventClick, tooltipComponent }: Calen
       >
         <p className="text-sm font-semibold pl-1 truncate whitespace-nowrap max-w-full">{event.title}</p>
       </div>
+    );
+  };
+
+  return (
+    <>
+      {renderEvent()}
       
       {/* Tooltip */}
       {renderTooltip()}

@@ -33,6 +33,11 @@ export interface TooltipComponentProps {
   event: CalendarEvent;
 }
 
+// Interface para o componente de evento customizado - apenas o event é exposto
+export interface EventComponentProps {
+  event: CalendarEvent;
+}
+
 interface BaseCalendarProps {
   type?: 'month' | 'week' | 'list';
   year: number;
@@ -40,6 +45,7 @@ interface BaseCalendarProps {
   eventClick?: (event: CalendarEvent) => void;
   dateClick?: (date: string, time?: string, list?: string) => void;
   tooltipComponent?: (props: TooltipComponentProps) => ReactNode;
+  eventComponent?: (props: EventComponentProps) => ReactNode;
 }
 
 interface MonthCalendarProps extends BaseCalendarProps {
@@ -65,7 +71,7 @@ interface ListCalendarProps extends Omit<BaseCalendarProps, 'events'> {
 export type CalendarProps = WeekCalendarProps | MonthCalendarProps | ListCalendarProps;
 
 export function Calendar(props: CalendarProps) {
-  const {type, year, events, eventClick, dateClick, tooltipComponent} = props;
+  const {type, year, events, eventClick, dateClick, tooltipComponent, eventComponent} = props;
   const month = 'month' in props ? props.month : undefined;
   const week = 'week' in props ? props.week : undefined;
   const day = 'day' in props ? props.day : undefined;
@@ -82,6 +88,7 @@ export function Calendar(props: CalendarProps) {
           eventClick={eventClick} 
           dateClick={dateClick}
           tooltipComponent={tooltipComponent}
+          eventComponent={eventComponent}
         />
       )}
       {(type === 'week') && week !== undefined && (
@@ -93,6 +100,7 @@ export function Calendar(props: CalendarProps) {
           eventClick={eventClick} 
           dateClick={dateClick}
           tooltipComponent={tooltipComponent}
+          eventComponent={eventComponent}
           timeInterval={timeInterval}
         />
       )}
@@ -106,6 +114,7 @@ export function Calendar(props: CalendarProps) {
           eventClick={eventClick}
           dateClick={dateClick}
           tooltipComponent={tooltipComponent}
+          eventComponent={eventComponent}
           timeInterval={timeInterval}
         />
       )}

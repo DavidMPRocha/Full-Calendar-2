@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import type { CalendarEvent, TooltipComponentProps, CalendarEventWeek } from "./calendar";
+import type { CalendarEvent, TooltipComponentProps, CalendarEventWeek, EventComponentProps } from "./calendar";
 import type { ReactNode } from "react";
 import { CalendarHeaderWeekList } from "./calendar-header-week-list";
 import { CalendarWeekRow } from "./calendar-week-row";
@@ -15,10 +15,11 @@ interface CalendarWeekProps {
   eventClick?: (event: CalendarEventWeek) => void;
   dateClick?: (date: string, time: string) => void;
   tooltipComponent?: (props: TooltipComponentProps) => ReactNode;
+  eventComponent?: (props: EventComponentProps) => ReactNode;
   timeInterval?: 5 | 15 | 30;
 }
 
-export function CalendarWeek({type, year, week, events, eventClick, dateClick, tooltipComponent, timeInterval: initialTimeInterval}: CalendarWeekProps) {
+export function CalendarWeek({type, year, week, events, eventClick, dateClick, tooltipComponent, eventComponent, timeInterval: initialTimeInterval}: CalendarWeekProps) {
   const [currentYear, setCurrentYear] = useState(year);
   const [currentWeek, setCurrentWeek] = useState(week);
   const [timeInterval, setTimeInterval] = useState<5 | 15 | 30>(initialTimeInterval || 5); // Usar o valor inicial ou padrão 5
@@ -310,6 +311,7 @@ export function CalendarWeek({type, year, week, events, eventClick, dateClick, t
         height={height}
         eventClick={eventClick}
         tooltipComponent={tooltipComponent}
+        eventComponent={eventComponent}
       />
     );
   };

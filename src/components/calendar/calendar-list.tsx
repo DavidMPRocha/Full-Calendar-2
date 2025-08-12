@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import type { CalendarEventList, TooltipComponentProps } from "./calendar";
+import type { CalendarEventList, TooltipComponentProps, EventComponentProps } from "./calendar";
 import type { ReactNode } from "react";
 import { CalendarHeaderHourList } from "./calendar-header-hour-list";
 import { CalendarListHeaderFilter } from "./calendar-list-header-filter";
@@ -16,10 +16,11 @@ interface CalendarListProps {
   eventClick?: (event: CalendarEventList) => void;
   dateClick?: (date: string, time: string, list: string) => void;
   tooltipComponent?: (props: TooltipComponentProps) => ReactNode;
+  eventComponent?: (props: EventComponentProps) => ReactNode;
   timeInterval?: 5 | 15 | 30;
 }
 
-export function CalendarList({type, year, month, day, events, eventClick, dateClick, tooltipComponent, timeInterval: initialTimeInterval}: CalendarListProps) {
+export function CalendarList({type, year, month, day, events, eventClick, dateClick, tooltipComponent, eventComponent, timeInterval: initialTimeInterval}: CalendarListProps) {
   const [currentYear, setCurrentYear] = useState(year);
   const [currentMonth, setCurrentMonth] = useState(month);
   const [currentDay, setCurrentDay] = useState(day);
@@ -293,6 +294,7 @@ export function CalendarList({type, year, month, day, events, eventClick, dateCl
         height={height}
         eventClick={eventClick as any}
         tooltipComponent={tooltipComponent}
+        eventComponent={eventComponent}
       />
     );
   };

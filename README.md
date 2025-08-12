@@ -62,7 +62,8 @@ A visualização mensal apresenta uma vista tradicional de calendário, mostrand
   events: CalendarEvent[],
   eventClick?: (event: CalendarEvent) => void,
   dateClick?: (date: string) => void,
-  tooltipComponent?: (props: TooltipComponentProps) => ReactNode
+  tooltipComponent?: (props: TooltipComponentProps) => ReactNode,
+  eventComponent?: (props: EventComponentProps) => ReactNode
 }
 ```
 
@@ -104,6 +105,7 @@ A visualização semanal oferece uma vista detalhada de uma semana específica, 
   eventClick?: (event: CalendarEventWeek) => void,
   dateClick?: (date: string, time: string) => void,
   tooltipComponent?: (props: TooltipComponentProps) => ReactNode,
+  eventComponent?: (props: EventComponentProps) => ReactNode,
   timeInterval?: 5 | 15 | 30 // Intervalo de tempo em minutos (padrão: 5)
 }
 ```
@@ -148,6 +150,7 @@ A visualização lista apresenta uma vista de agenda para um dia específico, or
   eventClick?: (event: CalendarEventList) => void,
   dateClick?: (date: string, time: string, list: string) => void,
   tooltipComponent?: (props: TooltipComponentProps) => ReactNode,
+  eventComponent?: (props: EventComponentProps) => ReactNode,
   timeInterval?: 5 | 15 | 30 // Intervalo de tempo em minutos (padrão: 5)
 }
 ```
@@ -245,6 +248,13 @@ interface CalendarEvent {
 }
 ```
 
+### EventComponentProps
+```typescript
+interface EventComponentProps {
+  event: CalendarEvent | CalendarEventWeek | CalendarEventList;
+}
+```
+
 ### CalendarEventWeek (Semanal)
 ```typescript
 interface CalendarEventWeek {
@@ -338,6 +348,30 @@ function CustomTooltip({ event }: TooltipComponentProps) {
   month={8}
   events={eventos}
   tooltipComponent={CustomTooltip}
+/>
+```
+
+### Eventos Personalizados
+Pode criar eventos customizados passando um componente:
+
+```tsx
+function CustomEvent({ event }: EventComponentProps) {
+  return (
+    <div className="bg-red-500 w-full h-full p-2 rounded">
+      <p className="text-white font-bold">{event.title}</p>
+      {event.description && (
+        <p className="text-white text-sm">{event.description}</p>
+      )}
+    </div>
+  );
+}
+
+<Calendar 
+  type="month"
+  year={2025}
+  month={8}
+  events={eventos}
+  eventComponent={CustomEvent}
 />
 ```
 

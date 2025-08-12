@@ -1,6 +1,6 @@
 import { CalendarMonthItem } from "./calendar-month-item";
 
-import type { CalendarEvent, TooltipComponentProps } from "./calendar";
+import type { CalendarEvent, EventComponentProps, TooltipComponentProps } from "./calendar";
 import type { ReactNode } from "react";
 
 interface CalendarRowProps {
@@ -9,9 +9,10 @@ interface CalendarRowProps {
   eventClick?: (event: CalendarEvent) => void;
   dateClick?: (date: string, time?: string) => void;
   tooltipComponent?: (props: TooltipComponentProps) => ReactNode;
+  eventComponent?: (props: EventComponentProps) => ReactNode;
 }
 
-export function CalendarMonthRow({ days, currentMonth, eventClick, dateClick, tooltipComponent}: CalendarRowProps) {
+export function CalendarMonthRow({ days, currentMonth, eventClick, dateClick, tooltipComponent, eventComponent}: CalendarRowProps) {
   return (
     <div className="grid grid-cols-7 h-full">
       {days.map((day, i) => {
@@ -32,6 +33,7 @@ export function CalendarMonthRow({ days, currentMonth, eventClick, dateClick, to
                   event={event}
                   eventClick={eventClick}
                   tooltipComponent={tooltipComponent}
+                  eventComponent={eventComponent}
                 />
               ))
             }

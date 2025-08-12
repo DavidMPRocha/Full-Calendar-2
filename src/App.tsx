@@ -1,12 +1,22 @@
 import { useState } from 'react';
 import './App.css'
-import { Calendar, type CalendarEvent, type CalendarEventList, type CalendarEventWeek, type TooltipComponentProps } from './components/calendar/calendar'
+import { Calendar, type CalendarEvent, type CalendarEventList, type CalendarEventWeek, type EventComponentProps, type TooltipComponentProps } from './components/calendar/calendar'
 
 // Componente de tooltip customizado - apenas recebe o event
 function CustomTooltip({ event }: TooltipComponentProps) {
-  console.log(event);
   return (
     <>
+    </>
+  );
+}
+
+// Componente de event customizado
+function CustomEvent({ event }: EventComponentProps) {
+  return (
+    <>
+      <div className="bg-red-500 w-full h-full">
+        <p>{event.title}</p>
+      </div>
     </>
   );
 }
@@ -184,6 +194,7 @@ function App() {
           events={dataMonth}
           eventClick={eventClick}
           dateClick={dateClick}
+          // eventComponent={CustomEvent}
           // tooltipComponent={CustomTooltip}
         />
       </div>
@@ -196,6 +207,7 @@ function App() {
           eventClick={eventClick}
           dateClick={dateClick}
           timeInterval={5}
+          // eventComponent={CustomEvent}
           // tooltipComponent={CustomTooltip}
         />
       </div>
@@ -209,6 +221,7 @@ function App() {
           eventClick={eventClick}
           dateClick={dateClick}
           timeInterval={5}
+          // eventComponent={CustomEvent}
           // tooltipComponent={CustomTooltip}
         />
       </div>

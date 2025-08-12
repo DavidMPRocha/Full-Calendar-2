@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { CalendarDay, CalendarEvent, TooltipComponentProps } from "./calendar";
+import type { CalendarDay, CalendarEvent, EventComponentProps, TooltipComponentProps } from "./calendar";
 import type { ReactNode } from "react";
 import { CalendarHeaderWeekList } from "./calendar-header-week-list";
 import { CalendarMonthRow } from "./calendar-month-row";
@@ -19,6 +19,7 @@ interface CalendarMonthProps {
   eventClick?: (event: CalendarEvent) => void;
   dateClick?: (date: string) => void;
   tooltipComponent?: (props: TooltipComponentProps) => ReactNode;
+  eventComponent?: (props: EventComponentProps) => ReactNode;
 }
 
 export const monthNames = [
@@ -26,7 +27,7 @@ export const monthNames = [
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
-export function CalendarMonth({type, year, month, events, eventClick, dateClick, tooltipComponent}: CalendarMonthProps) {
+export function CalendarMonth({type, year, month, events, eventClick, dateClick, tooltipComponent, eventComponent}: CalendarMonthProps) {
   const [calendarData, setCalendarData] = useState<CalendarWeek[]>([]);
   const [currentMonth, setCurrentMonth] = useState(month);
   const [currentYear, setCurrentYear] = useState(year);
@@ -111,6 +112,7 @@ export function CalendarMonth({type, year, month, events, eventClick, dateClick,
             dateClick={dateClick} 
             currentMonth={currentMonth}
             tooltipComponent={tooltipComponent}
+            eventComponent={eventComponent}
           />
         ))
       }
