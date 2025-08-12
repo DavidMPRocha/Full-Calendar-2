@@ -82,7 +82,7 @@ A visualização mensal apresenta uma vista tradicional de calendário, mostrand
 
 A visualização semanal oferece uma vista detalhada de uma semana específica, com horários organizados verticalmente e dias da semana horizontalmente.
 
-<img width="978" height="808" alt="image" src="https://github.com/user-attachments/assets/40ddaed5-01ce-4356-bff4-69b1e7a4507e" />
+<img width="1119" height="755" alt="image" src="https://github.com/user-attachments/assets/40291236-10d9-4942-b406-c5cc4d69b795" />
 
 
 #### Características:
@@ -125,7 +125,7 @@ A visualização semanal oferece uma vista detalhada de uma semana específica, 
 
 A visualização lista apresenta uma vista de agenda para um dia específico, organizando eventos por listas/categorias e horários.
 
-<img width="914" height="787" alt="image" src="https://github.com/user-attachments/assets/47d00375-209b-482c-9cb2-c4ffb329e966" />
+<img width="1076" height="695" alt="image" src="https://github.com/user-attachments/assets/48ea99d6-6d3f-430d-91ab-f495068c6b5b" />
 
 
 #### Características:
