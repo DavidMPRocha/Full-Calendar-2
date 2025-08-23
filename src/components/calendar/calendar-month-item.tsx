@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { CalendarEvent, EventComponentProps, TooltipComponentProps } from './calendar';
 import type { ReactNode } from 'react';
-import { CalendarItemTooltip } from './calendar-item-toltip';
+import { CalendarItemTooltip, calculateTooltipPosition } from './calendar-item-tooltip';
 
 interface CalendarItemProps {
   event: CalendarEvent;
@@ -14,15 +14,65 @@ export function CalendarMonthItem({ event, eventClick, tooltipComponent, eventCo
   // Estados para o tooltip
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+  const [isMouseOverTooltip, setIsMouseOverTooltip] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Cleanup dos timeouts quando o componente for desmontado
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   // Handlers para o tooltip
   const handleMouseEnter = (e: React.MouseEvent) => {
-    setTooltipPosition({ x: e.clientX, y: e.clientY });
+    const calculatedPosition = calculateTooltipPosition(e.clientX, e.clientY);
+    setTooltipPosition(calculatedPosition);
     setIsTooltipVisible(true);
+    setIsMouseOverTooltip(false);
+    
+    // Limpar timeout se existir
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
   };
 
   const handleMouseLeave = () => {
-    setIsTooltipVisible(false);
+    // Limpar timeout anterior se existir
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    
+    // Só fechar o tooltip se o mouse não estiver sobre ele
+    if (!isMouseOverTooltip) {
+      timeoutRef.current = setTimeout(() => {
+        setIsTooltipVisible(false);
+      }, 300); // Pequeno delay para permitir transição suave
+    }
+  };
+
+  const handleTooltipMouseEnter = () => {
+    setIsMouseOverTooltip(true);
+    // Limpar timeout se existir
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
+
+  const handleTooltipMouseLeave = () => {
+    setIsMouseOverTooltip(false);
+    // Limpar timeout anterior se existir
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    // Adicionar um pequeno delay para permitir transição suave
+    timeoutRef.current = setTimeout(() => {
+      setIsTooltipVisible(false);
+    }, 150);
   };
 
   // Função para renderizar o tooltip
@@ -37,11 +87,15 @@ export function CalendarMonthItem({ event, eventClick, tooltipComponent, eventCo
       if (customTooltip) {
         return (
           <div
-            className="fixed z-50"
+            className="fixed z-50 transform -translate-y-full"
             style={{
-              left: tooltipPosition.x + 10,
-              top: tooltipPosition.y - 10,
-              transform: 'translateY(-100%)'
+              left: tooltipPosition.x,
+              top: tooltipPosition.y,
+            }}
+            onMouseEnter={handleTooltipMouseEnter}
+            onMouseLeave={handleTooltipMouseLeave}
+            onClick={e => {
+              e.stopPropagation();
             }}
           >
             {customTooltip}
@@ -56,6 +110,8 @@ export function CalendarMonthItem({ event, eventClick, tooltipComponent, eventCo
         event={event}
         isVisible={isTooltipVisible}
         position={tooltipPosition}
+        onMouseEnter={handleTooltipMouseEnter}
+        onMouseLeave={handleTooltipMouseLeave}
       />
     );
   };
