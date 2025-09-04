@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 import type { CalendarDay, CalendarEvent, EventComponentProps, TooltipComponentProps } from "./calendar";
 import type { ReactNode } from "react";
 import { CalendarHeaderWeekList } from "./calendar-header-week-list";
@@ -28,14 +28,12 @@ export const monthNames = [
 ];
 
 export function CalendarMonth({type, year, month, events, eventClick, dateClick, tooltipComponent, eventComponent}: CalendarMonthProps) {
-  const [calendarData, setCalendarData] = useState<CalendarWeek[]>([]);
   const [currentMonth, setCurrentMonth] = useState(month);
   const [currentYear, setCurrentYear] = useState(year);
 
-  useEffect(() => {
-    const data = getWeeksInMonth(currentYear, currentMonth);
-    setCalendarData(data);
-  }, [type, currentYear, currentMonth, events]);
+  const calendarData = useMemo(() => {
+    return getWeeksInMonth(currentYear, currentMonth);
+  }, [currentYear, currentMonth, events]);
 
   function getWeeksInMonth(year: number, month: number) {
     const calendarDataTemp: CalendarWeek[] = [];

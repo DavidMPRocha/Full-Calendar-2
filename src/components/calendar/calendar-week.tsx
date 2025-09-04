@@ -79,7 +79,7 @@ export function CalendarWeek({type, year, week, events, eventClick, dateClick, t
   };
 
   // Função para verificar se dois eventos se sobrepõem
-  const eventsOverlap = (event1: CalendarEvent, event2: CalendarEvent): boolean => {
+  const eventsOverlap = (event1: CalendarEventWeek, event2: CalendarEventWeek): boolean => {
     if (!event1.dateStart || !event1.dateEnd || !event2.dateStart || !event2.dateEnd) return false;
     
     const start1 = timeToMinutes(event1.dateStart.split(' ')[1]);
@@ -91,7 +91,7 @@ export function CalendarWeek({type, year, week, events, eventClick, dateClick, t
   };
 
   // Função para calcular a posição de um evento no grid
-  const getEventPosition = (event: CalendarEvent) => {
+  const getEventPosition = (event: CalendarEventWeek) => {
     if (!event.dateStart || !event.dateEnd) return null;
 
     const startTime = event.dateStart.split(' ')[1];
@@ -328,10 +328,10 @@ export function CalendarWeek({type, year, week, events, eventClick, dateClick, t
         setTimeInterval={setTimeInterval}
       />
       {/* Header de dias de semana */}
-      <div className="ml-[50px]">
+      <div className="ml-[50px] overflow-y-auto">
         <CalendarHeaderWeekList/>
       </div>
-      <div className="relative flex h-full overflow-y-auto">
+      <div className="relative flex max-h-[500px] overflow-y-auto">
         {/* Header de horários */}
         <div className="w-[50px]">
           <CalendarHeaderHourList listTime={listTime} timeInterval={timeInterval} />

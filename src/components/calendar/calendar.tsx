@@ -3,21 +3,41 @@ import { CalendarWeek } from "./calendar-week";
 import { CalendarList } from "./calendar-list";
 import type { ReactNode } from "react";
 
+/**
+ * Interface base para eventos do calendário
+ */
 export interface CalendarEvent {
+  /** Título do evento */
   title: string;  
+  /** Data do evento no formato YYYY-MM-DD */
   date: string;
+  /** Cor do evento em formato hexadecimal */
   color?: string; 
-  [key: string]: any; 
+  /** Descrição opcional do evento */
+  description?: string;
+  /** ID único do evento */
+  id?: string;
 }
 
+/**
+ * Interface para eventos com horário específico (visualização semanal)
+ */
 export interface CalendarEventWeek extends CalendarEvent {
+  /** Data e hora de início no formato YYYY-MM-DD HH:MM */
   dateStart: string;
+  /** Data e hora de fim no formato YYYY-MM-DD HH:MM */
   dateEnd: string;
 }
 
+/**
+ * Interface para eventos de lista (visualização lista)
+ */
 export interface CalendarEventList extends CalendarEvent {
+  /** Data e hora de início no formato YYYY-MM-DD HH:MM */
   dateStart: string;
+  /** Data e hora de fim no formato YYYY-MM-DD HH:MM */
   dateEnd: string;
+  /** Nome da lista/categoria do evento */
   list: string; 
 }
 
@@ -70,6 +90,12 @@ interface ListCalendarProps extends Omit<BaseCalendarProps, 'events'> {
 
 export type CalendarProps = WeekCalendarProps | MonthCalendarProps | ListCalendarProps;
 
+/**
+ * Componente principal do calendário
+ * 
+ * @param props - Propriedades do calendário
+ * @returns Componente de calendário renderizado
+ */
 export function Calendar(props: CalendarProps) {
   const {type, year, events, eventClick, dateClick, tooltipComponent, eventComponent} = props;
   const month = 'month' in props ? props.month : undefined;
@@ -78,7 +104,11 @@ export function Calendar(props: CalendarProps) {
   const timeInterval = 'timeInterval' in props ? props.timeInterval : undefined;
 
   return (
-    <div className="w-full h-full min-w-[500px] min-h-[500px]">
+    <div 
+      className="w-full h-full min-w-[320px] md:min-w-[500px] min-h-[400px] md:min-h-[500px]"
+      role="application"
+      aria-label={`Calendário ${type === 'month' ? 'mensal' : type === 'week' ? 'semanal' : 'lista'}`}
+    >
       {(type === 'month' || type === undefined) && month !== undefined && (
         <CalendarMonth
           type={type} 

@@ -20,7 +20,7 @@ interface CalendarListProps {
   timeInterval?: 5 | 15 | 30;
 }
 
-export function CalendarList({type, year, month, day, events, eventClick, dateClick, tooltipComponent, eventComponent, timeInterval: initialTimeInterval}: CalendarListProps) {
+export function CalendarList({year, month, day, events, eventClick, dateClick, tooltipComponent, eventComponent, timeInterval: initialTimeInterval}: CalendarListProps) {
   const [currentYear, setCurrentYear] = useState(year);
   const [currentMonth, setCurrentMonth] = useState(month);
   const [currentDay, setCurrentDay] = useState(day);
@@ -286,7 +286,7 @@ export function CalendarList({type, year, month, day, events, eventClick, dateCl
     return (
       <CalendarWeekItem
         key={`${event.title}-${index}`}
-        event={event as any}
+        event={event}
         index={index}
         top={top}
         adjustedLeft={adjustedLeft}
@@ -316,13 +316,13 @@ export function CalendarList({type, year, month, day, events, eventClick, dateCl
       <div className="ml-[50px]">
         <CalendarListHeader listList={listList}/>
       </div>
-      <div className="relative flex h-full overflow-y-auto">
+      <div className="relative flex h-[500px] overflow-hidden">
         {/* Header de horários */}
-        <div className="w-[50px]">
+        <div className="w-[50px] overflow-y-auto">
           <CalendarHeaderHourList listTime={listTime} timeInterval={timeInterval} />
         </div>
         {/* Linhas de horários */}
-        <div className="w-full">
+        <div className="w-full overflow-y-auto">
           <CalendarListRow 
             listTime={listTime} 
             listList={listList} 
@@ -334,8 +334,10 @@ export function CalendarList({type, year, month, day, events, eventClick, dateCl
           />
         </div>
         {/* Eventos */}
-        <div className="absolute inset-y-0 left-[50px] right-0 pointer-events-none">
-          {filteredEvents.map((event, index) => renderEvent(event, index))}
+        <div className="absolute inset-y-0 left-[50px] right-0 pointer-events-none overflow-hidden">
+          <div className="h-full overflow-y-auto">
+            {filteredEvents.map((event, index) => renderEvent(event, index))}
+          </div>
         </div>
       </div>
     </div>

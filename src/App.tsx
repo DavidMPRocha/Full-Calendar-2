@@ -1,28 +1,28 @@
 import { useState } from 'react';
 import './App.css'
-import { Calendar, type CalendarEvent, type CalendarEventList, type CalendarEventWeek, type EventComponentProps, type TooltipComponentProps } from './components/calendar/calendar'
+import { Calendar, type CalendarEvent, type CalendarEventList, type CalendarEventWeek } from './components/calendar/calendar'
 
 // Componente de tooltip customizado - apenas recebe o event
-function CustomTooltip({ event }: TooltipComponentProps) {
-  return (
-    <>
-    </>
-  );
-}
+// function CustomTooltip({ event }: TooltipComponentProps) {
+//   return (
+//     <>
+//     </>
+//   );
+// }
 
 // Componente de event customizado
-function CustomEvent({ event }: EventComponentProps) {
-  return (
-    <>
-      <div className="bg-red-500 w-full h-full">
-        <p>{event.title}</p>
-      </div>
-    </>
-  );
-}
+// function CustomEvent({ event }: EventComponentProps) {
+//   return (
+//     <>
+//       <div className="bg-red-500 w-full h-full">
+//         <p>{event.title}</p>
+//       </div>
+//     </>
+//   );
+// }
 
 function App() {  
-  const [dataMonth, setDataMonth] = useState<CalendarEvent[]>([
+  const [dataMonth] = useState<CalendarEvent[]>([
     {
       title: 'Reunião 1', 
       date: '2025-09-04', 
@@ -64,7 +64,7 @@ function App() {
       color: '#f25529',
     },
   ]);
-  const [dataWeek, setDataWeek] = useState<CalendarEventWeek[]>([
+  const [dataWeek] = useState<CalendarEventWeek[]>([
     {
       title: 'Reunião 1', 
       date: '2025-08-01', 
@@ -96,12 +96,12 @@ function App() {
     {
       title: 'Reunião 5', 
       date: '2025-08-01', 
-      dateStart: '2025-08-01 02:0', 
-      dateEnd: '2025-08-01 3:30', 
+      dateStart: '2025-08-01 02:00', 
+      dateEnd: '2025-08-01 03:30', 
       color: '#f25529',
     },
   ]);
-  const [dataList, setDataList] = useState<CalendarEventList[]>([
+  const [dataList] = useState<CalendarEventList[]>([
     {
       title: 'Reunião 1', 
       date: '2025-08-01', 
@@ -137,8 +137,8 @@ function App() {
     {
       title: 'Reunião 5', 
       date: '2025-08-01', 
-      dateStart: '2025-08-01 02:0', 
-      dateEnd: '2025-08-01 3:30', 
+      dateStart: '2025-08-01 02:00', 
+      dateEnd: '2025-08-01 03:30', 
       color: '#f25529',
       list: 'Colaborador 2',
     },
@@ -168,7 +168,7 @@ function App() {
     },
   ]);
 
-  function eventClick(event: any) {
+  function eventClick(event: CalendarEvent | CalendarEventWeek | CalendarEventList) {
     console.log('Evento clicado:', event);
   }
 
@@ -177,28 +177,28 @@ function App() {
   }
 
   return (
-    <div style={{
-      display: 'flex', 
-      flexDirection: 'column',
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      width: '100vw',
-      minHeight: '100vh',
-      padding: '2rem'
-    }}>
-      <div style={{width: '900px', marginBottom: '5rem'}}>
-        <Calendar 
-          type="month"
-          year={2025}
-          month={9}
-          events={dataMonth}
-          eventClick={eventClick}
-          dateClick={dateClick}
-          // eventComponent={CustomEvent}
-          // tooltipComponent={CustomTooltip}
-        />
+    <div className="flex flex-col justify-center items-center w-full min-h-screen p-4 md:p-8">
+      <div className="w-full max-w-4xl mb-8 md:mb-20">
+        <h1 className="text-2xl md:text-3xl font-bold text-center mb-6 text-gray-800">
+          Calendário React - Demonstração
+        </h1>
+        <div className="w-full h-auto min-h-[500px]">
+          <Calendar 
+            type="month"
+            year={2025}
+            month={9}
+            events={dataMonth}
+            eventClick={eventClick}
+            dateClick={dateClick}
+            // eventComponent={CustomEvent}
+            // tooltipComponent={CustomTooltip}
+          />
+        </div>
       </div>
-      <div style={{width: '1000px', height: '700px', marginBottom: '10rem'}}>
+      <div className="w-full max-w-5xl h-auto min-h-[400px] md:h-[700px] mb-8 md:mb-20">
+        <h2 className="text-xl md:text-2xl font-semibold text-center mb-4 text-gray-700">
+          Visualização Semanal
+        </h2>
         <Calendar 
           type="week"
           year={2025}
@@ -211,7 +211,10 @@ function App() {
           // tooltipComponent={CustomTooltip}
         />
       </div>
-      <div style={{width: '1000px', height: '700px', marginBottom: '5rem'}}>
+      <div className="w-full max-w-5xl h-auto min-h-[400px] md:h-[700px] mb-8">
+        <h2 className="text-xl md:text-2xl font-semibold text-center mb-4 text-gray-700">
+          Visualização Lista
+        </h2>
         <Calendar 
           type="list"
           year={2025}
