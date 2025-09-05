@@ -316,13 +316,13 @@ export function CalendarList({year, month, day, events, eventClick, dateClick, t
       <div className="ml-[50px]">
         <CalendarListHeader listList={listList}/>
       </div>
-      <div className="relative flex h-[500px] overflow-hidden">
+      <div className="relative flex h-[500px] overflow-hidden overflow-y-auto">
         {/* Header de horários */}
-        <div className="w-[50px] overflow-y-auto">
+        <div className="w-[50px]">
           <CalendarHeaderHourList listTime={listTime} timeInterval={timeInterval} />
         </div>
         {/* Linhas de horários */}
-        <div className="w-full overflow-y-auto">
+        <div className="w-full">
           <CalendarListRow 
             listTime={listTime} 
             listList={listList} 
