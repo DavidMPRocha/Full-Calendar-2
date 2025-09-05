@@ -316,7 +316,7 @@ export function CalendarList({year, month, day, events, eventClick, dateClick, t
       <div className="ml-[50px]">
         <CalendarListHeader listList={listList}/>
       </div>
-      <div className="relative flex h-[500px] overflow-hidden overflow-y-auto">
+      <div className="relative flex max-h-[500px] overflow-y-auto">
         {/* Header de horários */}
         <div className="w-[50px]">
           <CalendarHeaderHourList listTime={listTime} timeInterval={timeInterval} />
@@ -334,10 +334,8 @@ export function CalendarList({year, month, day, events, eventClick, dateClick, t
           />
         </div>
         {/* Eventos */}
-        <div className="absolute inset-y-0 left-[50px] right-0 pointer-events-none overflow-hidden">
-          <div className="h-full overflow-y-auto">
-            {filteredEvents.map((event, index) => renderEvent(event, index))}
-          </div>
+        <div className="absolute inset-y-0 left-[50px] right-0 pointer-events-none">
+          {filteredEvents.map((event, index) => renderEvent(event, index))}
         </div>
       </div>
     </div>

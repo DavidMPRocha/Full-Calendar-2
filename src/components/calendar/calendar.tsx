@@ -1,6 +1,7 @@
 import { CalendarMonth } from "./calendar-month";
 import { CalendarWeek } from "./calendar-week";
 import { CalendarList } from "./calendar-list";
+import { TooltipProvider } from "./tooltip-context";
 import type { ReactNode } from "react";
 
 /**
@@ -104,50 +105,52 @@ export function Calendar(props: CalendarProps) {
   const timeInterval = 'timeInterval' in props ? props.timeInterval : undefined;
 
   return (
-    <div 
-      className="w-full h-full min-w-[320px] md:min-w-[500px] min-h-[400px] md:min-h-[500px]"
-      role="application"
-      aria-label={`Calendário ${type === 'month' ? 'mensal' : type === 'week' ? 'semanal' : 'lista'}`}
-    >
-      {(type === 'month' || type === undefined) && month !== undefined && (
-        <CalendarMonth
-          type={type} 
-          year={year} 
-          month={month} 
-          events={events} 
-          eventClick={eventClick} 
-          dateClick={dateClick}
-          tooltipComponent={tooltipComponent}
-          eventComponent={eventComponent}
-        />
-      )}
-      {(type === 'week') && week !== undefined && (
-        <CalendarWeek 
-          type={type} 
-          year={year} 
-          week={week}
-          events={events} 
-          eventClick={eventClick} 
-          dateClick={dateClick}
-          tooltipComponent={tooltipComponent}
-          eventComponent={eventComponent}
-          timeInterval={timeInterval}
-        />
-      )}
-      {(type === 'list') && day !== undefined && month !== undefined && (
-        <CalendarList
-          type={type}
-          year={year}
-          month={month}
-          day={day}
-          events={events}
-          eventClick={eventClick}
-          dateClick={dateClick}
-          tooltipComponent={tooltipComponent}
-          eventComponent={eventComponent}
-          timeInterval={timeInterval}
-        />
-      )}
-    </div>
+    <TooltipProvider>
+      <div 
+        className="w-full h-full min-w-[320px] md:min-w-[500px] min-h-[400px] md:min-h-[500px]"
+        role="application"
+        aria-label={`Calendário ${type === 'month' ? 'mensal' : type === 'week' ? 'semanal' : 'lista'}`}
+      >
+        {(type === 'month' || type === undefined) && month !== undefined && (
+          <CalendarMonth
+            type={type} 
+            year={year} 
+            month={month} 
+            events={events} 
+            eventClick={eventClick} 
+            dateClick={dateClick}
+            tooltipComponent={tooltipComponent}
+            eventComponent={eventComponent}
+          />
+        )}
+        {(type === 'week') && week !== undefined && (
+          <CalendarWeek 
+            type={type} 
+            year={year} 
+            week={week}
+            events={events} 
+            eventClick={eventClick} 
+            dateClick={dateClick}
+            tooltipComponent={tooltipComponent}
+            eventComponent={eventComponent}
+            timeInterval={timeInterval}
+          />
+        )}
+        {(type === 'list') && day !== undefined && month !== undefined && (
+          <CalendarList
+            type={type}
+            year={year}
+            month={month}
+            day={day}
+            events={events}
+            eventClick={eventClick}
+            dateClick={dateClick}
+            tooltipComponent={tooltipComponent}
+            eventComponent={eventComponent}
+            timeInterval={timeInterval}
+          />
+        )}
+      </div>
+    </TooltipProvider>
   );
 }

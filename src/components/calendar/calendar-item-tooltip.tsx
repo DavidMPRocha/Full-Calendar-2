@@ -1,11 +1,10 @@
-import type { CalendarEvent } from "./calendar";
+import type { CalendarEvent, CalendarEventWeek, CalendarEventList } from "./calendar";
+import { useTooltip } from "./tooltip-context";
 
 interface TooltipProps {
-  event: CalendarEvent;
+  event: CalendarEvent | CalendarEventWeek | CalendarEventList;
   isVisible: boolean;
   position: { x: number; y: number };
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
 }
 
 // Função para calcular a posição ideal do tooltip
@@ -36,7 +35,9 @@ export function calculateTooltipPosition(mouseX: number, mouseY: number) {
   return { x: newX, y: newY };
 }
 
-export function CalendarItemTooltip({ event, isVisible, position, onMouseEnter, onMouseLeave }: TooltipProps) {
+export function CalendarItemTooltip({ event, isVisible, position }: TooltipProps) {
+  const { scheduleHideTooltip, clearHideTimeout, setMouseOverTooltip } = useTooltip();
+  
   if (!isVisible) return null;
 
   const formatTime = (dateString?: string) => {
@@ -59,18 +60,29 @@ export function CalendarItemTooltip({ event, isVisible, position, onMouseEnter, 
     });
   };
   
+  const handleTooltipMouseEnter = () => {
+    setMouseOverTooltip(true);
+    clearHideTimeout();
+  };
+
+  const handleTooltipMouseLeave = () => {
+    setMouseOverTooltip(false);
+    scheduleHideTooltip();
+  };
+
   return (
     <div
-      className="fixed z-50 bg-white border border-gray-200 rounded-lg shadow-lg p-4 min-w-[280px] max-w-[320px] transform -translate-y-full"
+      className="fixed z-50 bg-white border border-gray-200 rounded-lg shadow-lg p-4 min-w-[280px] max-w-[320px]"
       style={{
-        left: position.x,
-        top: position.y,
+        left: position.x + 10,
+        top: position.y - 10,
+        transform: 'translateY(-100%)',
+        pointerEvents: 'auto'
       }}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      onClick={e => {
-        e.stopPropagation();
-      }}
+      onMouseEnter={handleTooltipMouseEnter}
+      onMouseLeave={handleTooltipMouseLeave}
+      role="tooltip"
+      aria-label={`Informações do evento: ${event.title}`}
     >
       {/* Header do tooltip */}
       <div className="flex items-center justify-between mb-3">
@@ -90,18 +102,22 @@ export function CalendarItemTooltip({ event, isVisible, position, onMouseEnter, 
 
       {/* Informações de data/tempo */}
       <div className="space-y-2 text-xs text-gray-600">
-        <div className="flex items-center">
-          <svg className="w-3 h-3 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>Início: {formatTime(event.dateStart)}</span>
-        </div>
-        <div className="flex items-center">
-          <svg className="w-3 h-3 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>Fim: {formatTime(event.dateEnd)}</span>
-        </div>
+        {'dateStart' in event && (
+          <div className="flex items-center">
+            <svg className="w-3 h-3 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Início: {formatTime(event.dateStart)}</span>
+          </div>
+        )}
+        {'dateEnd' in event && (
+          <div className="flex items-center">
+            <svg className="w-3 h-3 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Fim: {formatTime(event.dateEnd)}</span>
+          </div>
+        )}
       </div>
     </div>
   );

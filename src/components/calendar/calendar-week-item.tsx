@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import type { TooltipComponentProps, CalendarEventWeek, EventComponentProps } from './calendar';
 import type { ReactNode } from 'react';
 import { CalendarItemTooltip, calculateTooltipPosition } from './calendar-item-tooltip';
+import { useTooltip } from './tooltip-context';
 
 interface CalendarWeekItemProps {
   event: CalendarEventWeek;
@@ -16,73 +17,52 @@ interface CalendarWeekItemProps {
 }
 
 export function CalendarWeekItem({ event, index, top, adjustedLeft, adjustedWidth, height, eventClick, tooltipComponent, eventComponent}: CalendarWeekItemProps) {
-  // Estados para o tooltip
-  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
-  const [isMouseOverTooltip, setIsMouseOverTooltip] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { showTooltip, tooltipState, scheduleHideTooltip, clearHideTimeout, setMouseOverTooltip } = useTooltip();
 
   // Cleanup dos timeouts quando o componente for desmontado
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      clearHideTimeout();
     };
-  }, []);
+  }, [clearHideTimeout]);
 
   // Handlers para o tooltip
   const handleMouseEnter = (e: React.MouseEvent) => {
     const calculatedPosition = calculateTooltipPosition(e.clientX, e.clientY);
-    setTooltipPosition(calculatedPosition);
-    setIsTooltipVisible(true);
-    setIsMouseOverTooltip(false);
-    
-    // Limpar timeout se existir
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
+    showTooltip(event, calculatedPosition);
   };
 
   const handleMouseLeave = () => {
-    // Limpar timeout anterior se existir
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    
-    // Só fechar o tooltip se o mouse não estiver sobre ele
-    if (!isMouseOverTooltip) {
-      timeoutRef.current = setTimeout(() => {
-        setIsTooltipVisible(false);
-      }, 300); // Aumentar delay para dar mais tempo
-    }
+    // Sempre agendar fechamento, mas o tooltip pode cancelar se o mouse estiver sobre ele
+    scheduleHideTooltip();
   };
 
   const handleTooltipMouseEnter = () => {
-    setIsMouseOverTooltip(true);
-    // Limpar timeout se existir
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
+    setMouseOverTooltip(true);
+    clearHideTimeout();
   };
 
   const handleTooltipMouseLeave = () => {
-    setIsMouseOverTooltip(false);
-    // Limpar timeout anterior se existir
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
+    setMouseOverTooltip(false);
+    scheduleHideTooltip();
+  };
+
+  // Função helper para comparar eventos
+  const isSameEvent = (event1: any, event2: any) => {
+    if (!event1 || !event2) return false;
+    
+    // Se ambos têm ID, comparar por ID
+    if (event1.id && event2.id) {
+      return event1.id === event2.id;
     }
-    // Adicionar um pequeno delay para permitir transição suave
-    timeoutRef.current = setTimeout(() => {
-      setIsTooltipVisible(false);
-    }, 150);
+    
+    // Caso contrário, comparar por título e data
+    return event1.title === event2.title && event1.date === event2.date;
   };
 
   // Função para renderizar o tooltip
   const renderTooltip = () => {
-    if (!isTooltipVisible) return null;
+    if (!tooltipState.isVisible || !isSameEvent(tooltipState.event, event)) return null;
 
     // Se um componente customizado foi fornecido
     if (tooltipComponent) {
@@ -94,8 +74,8 @@ export function CalendarWeekItem({ event, index, top, adjustedLeft, adjustedWidt
           <div
             className="fixed z-50 transform -translate-y-full pointer-events-auto"
             style={{
-              left: tooltipPosition.x,
-              top: tooltipPosition.y,
+              left: tooltipState.position.x,
+              top: tooltipState.position.y,
             }}
             onMouseEnter={handleTooltipMouseEnter}
             onMouseLeave={handleTooltipMouseLeave}
@@ -113,10 +93,8 @@ export function CalendarWeekItem({ event, index, top, adjustedLeft, adjustedWidt
     return (
       <CalendarItemTooltip
         event={event}
-        isVisible={isTooltipVisible}
-        position={tooltipPosition}
-        onMouseEnter={handleTooltipMouseEnter}
-        onMouseLeave={handleTooltipMouseLeave}
+        isVisible={tooltipState.isVisible}
+        position={tooltipState.position}
       />
     );
   };
