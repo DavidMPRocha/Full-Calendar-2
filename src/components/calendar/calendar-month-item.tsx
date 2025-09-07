@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import type { CalendarEvent, EventComponentProps, TooltipComponentProps } from './calendar';
 import type { ReactNode } from 'react';
 import { CalendarItemTooltip, calculateTooltipPosition } from './calendar-item-tooltip';
@@ -11,7 +11,7 @@ interface CalendarItemProps {
   eventComponent?: (props: EventComponentProps) => ReactNode;
 }
 
-export function CalendarMonthItem({ event, eventClick, tooltipComponent, eventComponent}: CalendarItemProps) {
+const CalendarMonthItem = memo(function CalendarMonthItem({ event, eventClick, tooltipComponent, eventComponent}: CalendarItemProps) {
   const { showTooltip, tooltipState, scheduleHideTooltip, clearHideTimeout, setMouseOverTooltip } = useTooltip();
 
   // Cleanup dos timeouts quando o componente for desmontado
@@ -143,4 +143,6 @@ export function CalendarMonthItem({ event, eventClick, tooltipComponent, eventCo
       {renderTooltip()}
     </>
   );
-}
+});
+
+export { CalendarMonthItem };
