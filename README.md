@@ -2,6 +2,9 @@
 
 Um componente de calendário React moderno e flexível, desenvolvido com TypeScript e Tailwind CSS, que oferece três visualizações distintas para gestão de eventos e agendamentos.
 
+## 📅 Live Preview  
+👉 [Acesse aqui](https://full-calendar-2.vercel.app/) ou https://full-calendar-2.vercel.app/
+
 ## 🚀 Características Principais
 
 - **Três Visualizações**: Mês, Semana e Lista
