@@ -316,7 +316,7 @@ export function CalendarList({year, month, day, events, eventClick, dateClick, t
       <div className="ml-[50px]">
         <CalendarListHeader listList={listList}/>
       </div>
-      <div className="relative flex max-h-[500px] overflow-y-auto">
+      <div className="relative flex max-h-full overflow-y-auto">
         {/* Header de horários */}
         <div className="w-[50px]">
           <CalendarHeaderHourList listTime={listTime} timeInterval={timeInterval} />
