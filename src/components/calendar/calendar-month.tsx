@@ -27,6 +27,22 @@ export const monthNames = [
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
+export function getWeekNumberSundayStart(date: Date) {
+  const startOfYear = new Date(date.getFullYear(), 0, 1); // 1º de janeiro
+  const dayOfWeekStart = startOfYear.getDay(); // 0 = domingo, 1 = segunda, 2 = terça, 3 = quarta, 4 = quinta, 5 = sexta, 6 = sábado
+
+  // Diferença em milissegundos entre a data e o começo do ano
+  const diffInMs = date.getTime() - startOfYear.getTime();
+
+  // Dias desde o início do ano
+  const daysPassed = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+  // Ajusta para o início da semana começando no domingo
+  const weekNumber = Math.floor((daysPassed + dayOfWeekStart) / 7) + 1;
+
+  return weekNumber + 1; 
+}
+
 export function CalendarMonth({type, year, month, events, eventClick, dateClick, tooltipComponent, eventComponent}: CalendarMonthProps) {
   const [currentMonth, setCurrentMonth] = useState(month);
   const [currentYear, setCurrentYear] = useState(year);
@@ -71,22 +87,6 @@ export function CalendarMonth({type, year, month, events, eventClick, dateClick,
     }
 
     return calendarDataTemp;
-  }
-
-  function getWeekNumberSundayStart(date: Date) {
-    const startOfYear = new Date(date.getFullYear(), 0, 1); // 1º de janeiro
-    const dayOfWeekStart = startOfYear.getDay(); // 0 = domingo, 1 = segunda, 2 = terça, 3 = quarta, 4 = quinta, 5 = sexta, 6 = sábado
-
-    // Diferença em milissegundos entre a data e o começo do ano
-    const diffInMs = date.getTime() - startOfYear.getTime();
-
-    // Dias desde o início do ano
-    const daysPassed = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-
-    // Ajusta para o início da semana começando no domingo
-    const weekNumber = Math.floor((daysPassed + dayOfWeekStart) / 7) + 1;
-
-    return weekNumber + 1; 
   }
 
   return (

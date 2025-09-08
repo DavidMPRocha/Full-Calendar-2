@@ -14,7 +14,7 @@ interface CalendarRowProps {
 
 export function CalendarMonthRow({ days, currentMonth, eventClick, dateClick, tooltipComponent, eventComponent}: CalendarRowProps) {
   return (
-    <div className="grid grid-cols-7 h-full">
+    <div className="grid grid-cols-7">
       {days.map((day, i) => {
         const dateStr = `${day.year}-${day.month.toString().padStart(2, '0')}-${day.day.toString().padStart(2, '0')}`;
         const isOtherMonth = day.month !== currentMonth;
