@@ -43,7 +43,7 @@ export function getWeekNumberSundayStart(date: Date) {
   return weekNumber + 1; 
 }
 
-export function CalendarMonth({type, year, month, events, eventClick, dateClick, tooltipComponent, eventComponent}: CalendarMonthProps) {
+export function CalendarMonth({year, month, events, eventClick, dateClick, tooltipComponent, eventComponent}: CalendarMonthProps) {
   const [currentMonth, setCurrentMonth] = useState(month);
   const [currentYear, setCurrentYear] = useState(year);
 
