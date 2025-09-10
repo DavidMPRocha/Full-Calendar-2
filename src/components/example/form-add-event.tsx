@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import type { CalendarEventList } from "../calendar/calendar";
 
-
 interface FormAddEventProps {
   defaultValues: CalendarEventList;
   onSubmitForm: (data: CalendarEventList) => void;

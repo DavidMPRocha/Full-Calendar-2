@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import type { CalendarDay, CalendarEvent, EventComponentProps, TooltipComponentProps } from "./calendar";
 import type { ReactNode } from "react";
-import { CalendarHeaderWeekList } from "./calendar-header-week-list";
+import { CalendarHeaderWeekList } from "./week/calendar-header-week-list";
 import { CalendarMonthRow } from "./calendar-month-row";
 import { CalendarMonthHeaderFilter } from "./calendar-month-header-filter";
 

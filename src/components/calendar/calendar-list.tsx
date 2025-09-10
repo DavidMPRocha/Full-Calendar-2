@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
 import type { CalendarEventList, TooltipComponentProps, EventComponentProps } from "./calendar";
 import type { ReactNode } from "react";
-import { CalendarHeaderHourList } from "./calendar-header-hour-list";
+import { CalendarHeaderHourList } from "./week/calendar-header-hour-list";
 import { CalendarListHeaderFilter } from "./calendar-list-header-filter";
 import { CalendarListRow } from "./calendar-list-row";
 import { CalendarListHeader } from "./calendar-list-header";
-import { CalendarWeekItem } from "./calendar-week-item";
+import { CalendarWeekItem } from "./week/calendar-week-item";
 
 interface CalendarListProps {
   type: 'list';
