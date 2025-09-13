@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { timeToMinutes } from './useTimeList';
-import type { CalendarEventWeek } from '../../calendar';
+import type { CalendarEventList } from '../../calendar';
+import { timeToMinutes } from '../../week/hooks/useTimeList';
 
-export interface EventPosition {
+export interface ListEventPosition {
   startRow: number;
   endRow: number;
   column: number;
@@ -11,54 +11,53 @@ export interface EventPosition {
   eventIndex: number;
 }
 
-export interface OptimizedPosition {
+export interface ListOptimizedPosition {
   column: number;
   totalOverlapping: number;
 }
 
 /**
- * Hook para calcular posições otimizadas de eventos
+ * Hook para calcular posições de eventos na visualização lista
  */
-export function useEventPositions(
-  events: CalendarEventWeek[],
-  timeList: string[]
-): Record<number, OptimizedPosition> {
+export function useListEventPositions(
+  events: CalendarEventList[],
+  timeList: string[],
+  listList: string[]
+): Record<number, ListOptimizedPosition> {
   return useMemo(() => {
-    const positions: { [eventIndex: number]: OptimizedPosition } = {};
+    const positions: { [eventIndex: number]: ListOptimizedPosition } = {};
 
-    // Agrupar índices de eventos por dia da semana
-    const eventsByDay: { [dayOfWeek: number]: number[] } = {};
+    // Agrupar índices de eventos por lista
+    const eventsByList: { [listName: string]: number[] } = {};
 
     events.forEach((event, idx) => {
       if (!event.dateStart) return;
 
-      const eventDate = new Date(event.dateStart);
-      const dayOfWeek = eventDate.getDay();
+      const listName = event.list;
 
-      if (!eventsByDay[dayOfWeek]) {
-        eventsByDay[dayOfWeek] = [];
+      if (!eventsByList[listName]) {
+        eventsByList[listName] = [];
       }
-      eventsByDay[dayOfWeek].push(idx);
+      eventsByList[listName].push(idx);
     });
 
-    // Para cada dia, calcular posições otimizadas
-    Object.keys(eventsByDay).forEach(dayStr => {
-      const dayOfWeek = parseInt(dayStr);
-      const dayEventIndices = eventsByDay[dayOfWeek];
+    // Para cada lista, calcular posições otimizadas
+    Object.keys(eventsByList).forEach(listName => {
+      const listEventIndices = eventsByList[listName];
 
       // Ordenar índices por horário de início
-      dayEventIndices.sort((aIdx, bIdx) => {
+      listEventIndices.sort((aIdx, bIdx) => {
         const startA = timeToMinutes(events[aIdx].dateStart?.split(' ')[1] || '00:00');
         const startB = timeToMinutes(events[bIdx].dateStart?.split(' ')[1] || '00:00');
         return startA - startB;
       });
 
       // Para cada evento, encontrar a primeira coluna disponível
-      dayEventIndices.forEach(eventIndex => {
+      listEventIndices.forEach(eventIndex => {
         const event = events[eventIndex];
 
         // Encontrar todos os eventos que se sobrepõem com este evento
-        const overlappingIndices = dayEventIndices.filter(otherIndex =>
+        const overlappingIndices = listEventIndices.filter(otherIndex =>
           otherIndex !== eventIndex && eventsOverlap(event, events[otherIndex])
         );
 
@@ -124,13 +123,13 @@ export function useEventPositions(
     });
 
     return positions;
-  }, [events, timeList]);
+  }, [events, timeList, listList]);
 }
 
 /**
  * Função para verificar se dois eventos se sobrepõem
  */
-function eventsOverlap(event1: CalendarEventWeek, event2: CalendarEventWeek): boolean {
+function eventsOverlap(event1: CalendarEventList, event2: CalendarEventList): boolean {
   if (!event1.dateStart || !event1.dateEnd || !event2.dateStart || !event2.dateEnd) return false;
   
   const start1 = timeToMinutes(event1.dateStart.split(' ')[1]);
@@ -142,12 +141,13 @@ function eventsOverlap(event1: CalendarEventWeek, event2: CalendarEventWeek): bo
 }
 
 /**
- * Função para calcular a posição de um evento no grid
+ * Função para calcular a posição de um evento no grid da lista
  */
-export function getEventPosition(
-  event: CalendarEventWeek,
-  timeList: string[]
-): EventPosition | null {
+export function getListEventPosition(
+  event: CalendarEventList,
+  timeList: string[],
+  listList: string[]
+): ListEventPosition | null {
   if (!event.dateStart || !event.dateEnd) return null;
 
   const startTime = event.dateStart.split(' ')[1];
@@ -185,13 +185,14 @@ export function getEventPosition(
   
   if (startIndex === -1 || endIndex === -1) return null;
 
-  const eventDate = new Date(event.dateStart);
-  const dayOfWeek = eventDate.getDay();
+  // Para list view, usar o índice da lista como coluna
+  const listIndex = listList.indexOf(event.list);
+  const column = listIndex !== -1 ? listIndex : 0;
   
   return {
     startRow: startIndex,
     endRow: endIndex,
-    column: dayOfWeek,
+    column: column,
     duration: Math.max(1, endIndex - startIndex),
     totalOverlapping: 1, // Será calculado na função de renderização
     eventIndex: 0 // Será calculado na função de renderização
