@@ -2,7 +2,7 @@ import { CalendarWeekItem } from '../week/calendar-week-item';
 import type { CalendarEventList, TooltipComponentProps, EventComponentProps } from '../calendar';
 import type { ReactNode } from 'react';
 import { getListEventPosition, type ListOptimizedPosition } from './hooks';
-import { getRowHeight } from '../week/hooks/useTimeList';
+import { getRowHeight } from '../week';
 
 interface ListEventsProps {
   events: CalendarEventList[];

@@ -1,5 +1,5 @@
 import { CalendarListHeaderFilter } from './calendar-list-header-filter';
-import type { TimeInterval } from '../../week/hooks/useTimeList';
+import type { TimeInterval } from '../week';
 
 interface ListNavigationProps {
   currentDay: number;

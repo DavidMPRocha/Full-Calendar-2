@@ -1,7 +1,7 @@
 import { CalendarListHeader } from './calendar-list-header';
 import { CalendarListRow } from './calendar-list-row';
 import { CalendarHeaderHourList } from '../week/calendar-header-hour-list';
-import type { TimeInterval } from '../../week/hooks/useTimeList';
+import type { TimeInterval } from '../week';
 import type { CalendarEventList, TooltipComponentProps, EventComponentProps } from '../calendar';
 import type { ReactNode } from 'react';
 import { ListEvents } from './ListEvents';

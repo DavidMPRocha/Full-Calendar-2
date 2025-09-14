@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { monthNames } from "./calendar-month";
+import { monthNames } from "./hooks";
 
 export function CalendarMonthHeaderFilter({currentMonth, currentYear, setCurrentMonth, setCurrentYear}: {currentMonth: number, currentYear: number, setCurrentMonth: (month: number) => void, setCurrentYear: (year: number) => void}) {
   function handlePrevMonth() {
