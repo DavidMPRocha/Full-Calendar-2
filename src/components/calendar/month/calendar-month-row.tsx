@@ -1,6 +1,6 @@
 import { CalendarMonthItem } from "./calendar-month-item";
 
-import type { CalendarEvent, EventComponentProps, TooltipComponentProps } from "./calendar";
+import type { CalendarEvent, EventComponentProps, TooltipComponentProps } from "../calendar";
 import type { ReactNode } from "react";
 
 interface CalendarRowProps {

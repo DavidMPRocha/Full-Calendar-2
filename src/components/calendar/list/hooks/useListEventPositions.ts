@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import type { CalendarEventList } from '../../calendar';
-import { timeToMinutes } from '../../week/hooks/useTimeList';
+import { timeToMinutes } from '../../week';
 
 export interface ListEventPosition {
   startRow: number;

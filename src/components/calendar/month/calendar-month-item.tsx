@@ -1,8 +1,8 @@
 import React, { useEffect, memo } from 'react';
-import type { CalendarEvent, EventComponentProps, TooltipComponentProps } from './calendar';
+import type { CalendarEvent, EventComponentProps, TooltipComponentProps } from './../calendar';
 import type { ReactNode } from 'react';
-import { CalendarItemTooltip, calculateTooltipPosition } from './calendar-item-tooltip';
-import { useTooltip } from './tooltip-context';
+import { CalendarItemTooltip, calculateTooltipPosition } from './../calendar-item-tooltip';
+import { useTooltip } from './../tooltip-context';
 
 interface CalendarItemProps {
   event: CalendarEvent;
